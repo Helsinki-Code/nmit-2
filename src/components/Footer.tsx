@@ -1,7 +1,8 @@
+import { BrandLogo } from './BrandLogo';
 import { Link } from 'react-router-dom';
 export function Footer() {
   return <footer className="site"><div className="wrap"><div className="footer-grid">
-    <div><Link className="brand" to="/"><span className="mark" aria-hidden="true" /><span className="word">NM<em>IT Solutions</em></span></Link>
+    <div><Link className="brand" to="/" aria-label="NM IT Solutions, home"><BrandLogo /></Link>
       <p style={{ marginTop: 12, color: 'var(--ink-muted)', maxWidth: '34ch' }}>Cloud infrastructure, DevOps, and API integration for banks, exchanges, and insurers.</p>
     </div>
     <div><h4>site</h4><ul>{[['/services','Services'],['/about','About'],['/careers','Careers'],['/blog','Blog'],['/contact','Contact']].map(([to,label]) => <li key={to}><Link to={to}>{label}</Link></li>)}</ul></div>

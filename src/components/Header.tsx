@@ -1,3 +1,4 @@
+import { BrandLogo } from './BrandLogo';
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 type Theme = 'light' | 'dark';
@@ -15,7 +16,7 @@ export function Header() {
     media.addEventListener('change', update);
     return () => media.removeEventListener('change', update);
   }, []);
-  useEffect(() => { document.documentElement.dataset.theme = theme; }, [theme]);
+  useEffect(() => { document.documentElement.dataset.theme = theme; document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#14181A' : '#EEF0E9'); }, [theme]);
   useEffect(() => {
     const close = (event: KeyboardEvent) => { if (event.key === 'Escape') setOpen(false); };
     window.addEventListener('keydown', close);
@@ -27,7 +28,7 @@ export function Header() {
     try { localStorage.setItem('nmit-theme', next); } catch { /* Preferences can be disabled. */ }
   }
   return <header className="site"><div className="header-row">
-    <Link className="brand" to="/" aria-label="NM IT Solutions, home"><span className="mark" aria-hidden="true" /><span className="word">NM<em>IT Solutions</em></span></Link>
+    <Link className="brand" to="/" aria-label="NM IT Solutions, home"><BrandLogo /></Link>
     <nav className={`primary${open ? ' open' : ''}`} id="primary-nav">
       {navigation.map(([to, label]) => <NavLink key={to} to={to} end={to === '/'} onClick={() => setOpen(false)}><span className="dot" />{label}</NavLink>)}
     </nav>

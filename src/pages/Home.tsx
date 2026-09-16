@@ -1,14 +1,30 @@
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { HeroHeadline } from '../components/HeroHeadline';
 import { IntegrationDiagram } from '../components/IntegrationDiagram';
 import { ClientNames, PostItem, Readout, ServiceRow, Workshop } from '../components/Content';
 import { posts } from '../data/posts';
+const IntegrationModel = lazy(() => import('../components/IntegrationModel'));
 export function Home() {
+  const heroRef = useRef<HTMLElement>(null);
+  const [paused,setPaused] = useState(false);
+  const [reduced,setReduced] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const [visible,setVisible] = useState(true);
+  useEffect(() => {
+    const media = matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReduced(media.matches);
+    media.addEventListener('change',update);
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+    observer.observe(heroRef.current!);
+    return () => { media.removeEventListener('change',update); observer.disconnect(); };
+  }, []);
+  const playing = !paused && !reduced && visible;
   return <>
-    <section className="hero hero-anim"><div>
-      <h1>Your ERP doesn’t talk to your payment gateway. We build the layer that does.</h1>
+    <section className="hero hero-modern" ref={heroRef} data-playing={playing}><div className="hero-copy">
+      <HeroHeadline playing={playing} />
       <p className="lede">NM IT Solutions is a Bengaluru-based team of 40+ engineers working on cloud infrastructure, DevOps, and API integration for banks, exchanges, and insurers.</p>
       <div className="cta-row"><Link className="btn btn-primary" to="/contact/workshop">Book the free integration workshop</Link><Link className="btn btn-outline" to="/services">See how the four services fit together</Link></div>
-    </div><div><IntegrationDiagram /></div></section>
+    </div><div className="hero-visual"><Suspense fallback={<div className="model-placeholder"><IntegrationDiagram /></div>}><IntegrationModel playing={playing} reduced={reduced} onToggle={()=>setPaused(value=>!value)} /></Suspense></div></section>
     <div className="wrap"><div className="rule" /></div>
     <section className="tight prose"><h2>What we do</h2>
       <ServiceRow name="DevOps" text="Release pipelines, monitoring, and incident response for teams running production systems." />

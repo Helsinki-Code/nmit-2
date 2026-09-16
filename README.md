@@ -1,6 +1,6 @@
 # NMIT design 2 — React application
 
-A React + TypeScript application built with Vite and React Router. The supplied `ex.html` is the visual and content reference, not the application implementation. Its CSS, color tokens, font configuration, layout, SVG coordinates, page copy, and blog data are preserved.
+A React + TypeScript application built with Vite and React Router. The supplied `ex.html` is the visual and content reference, not the application implementation. The original content, typography, palette, and page layouts are preserved outside the updated hero. The hero now uses a Three.js integration workbench and a full-message animated headline.
 
 ## CLI workflow
 
@@ -32,6 +32,16 @@ The three blog pages preserve the reference's content and dates. The workshop ro
 
 ## Verification
 
-`npm run check` type-checks the application. `npm run build` type-checks and produces the optimized deployment. With the preview running, `npm run verify:browser` uses Playwright with installed Google Chrome headlessly to verify ten rendered views, theme persistence, mobile navigation, workshop selection, and form validation. It captures light/dark desktop and mobile screenshots. When the original reference is available at `../website-review/ex.html` (or `REFERENCE_HTML`), it also compares every page’s content and layout geometry and compares the home screenshots. Set `CHROME_BIN` or `PREVIEW_URL` to override local defaults. Browser artifacts are ignored by Git.
+`npm run check` type-checks the application. `npm run build` type-checks and produces the optimized deployment. With the preview running, `npm run verify:browser` uses Playwright with installed Google Chrome headlessly to verify ten rendered views, theme persistence, mobile navigation, workshop selection, and form validation. It captures light/dark desktop and mobile screenshots. When the original reference is available at `../website-review/ex.html` (or `REFERENCE_HTML`), it also compares the nine unchanged views against the reference. The updated hero is checked for 3D rendering, system selection, camera drag/reset, pause/play, reduced motion, and WebGL fallback. Set `CHROME_BIN` or `PREVIEW_URL` to override local defaults. Browser artifacts are ignored by Git.
 
 `reference.json` identifies the original reference snapshot. It is retained for provenance; the React implementation is intentionally a component-based recreation, not a byte-identical HTML copy. Fonts retain the original Google Fonts URLs and system fallbacks.
+
+## Interactive hero
+
+The home route loads the Three.js model in a separate lazy-loaded bundle. The architecture slowly rocks and floats. Drag to rotate it; click a module, label, or system selector to open that system’s own 3D explainer board. Each board includes its role, two integration steps, and its connection flow; close it with its button or Escape. Reset restores the initial camera. Pause stops the model, data flow, and headline sequences. All headline words retain explicit spaces during animation. Reduced-motion preference disables automatic movement, and rendering pauses when the hero is offscreen or the tab is hidden. If WebGL is unavailable, the original SVG diagram remains available. No external 3D assets or simulated business metrics are used.
+
+See `docs/hero-design.md` for the design direction and theme decisions.
+
+## Brand assets
+
+`src/components/BrandLogo.tsx` provides the NMIT integration-bridge mark and wordmark used in the shared header and footer. The original `public/brand/nmit-concept.png` is used directly in the header, footer, favicon, fallback diagram, and as a texture at the center of the 3D hub. The hub is named NMIT. The image remains unchanged in both themes; `docs/brand-design.md` records the concept and palette.
