@@ -7,21 +7,21 @@ const titles: Record<string, string> = { '': 'NMIT — cloud, DevOps, and API in
 export function getPageSeo(pathname: string) {
   const [page = '', slug] = pathname.split('/').filter(Boolean);
   const post = page === 'blog' ? posts.find(item => item.slug === slug) : undefined;
-  const legacy = post?.contentKey === 'legacy-integration';
+  const richArticle = Boolean(post?.contentKey);
   const path = page === 'contact' ? '/contact' : pathname.replace(/\/$/, '') || '/';
   const url = `${siteUrl}${path}`;
-  const title = legacy ? 'Legacy System Integration: ERP, CRM & Partner APIs | NMIT' : post ? `${post.title} — NMIT` : titles[page] ?? 'Page not found — NMIT';
+  const title = post?.seoTitle ?? (post ? `${post.title} — NMIT` : titles[page] ?? 'Page not found — NMIT');
   const description = post?.description ?? post?.excerpt ?? defaultDescription;
-  const image = `${siteUrl}${legacy ? '/images/articles/legacy-system-integration/cover-1536.webp' : '/brand/nmit-concept.png'}`;
+  const image = `${siteUrl}${post?.featuredImage?.replace('-768.webp', '-1536.webp') ?? '/brand/nmit-concept.png'}`;
   const imageAlt = post?.featuredImageAlt ?? 'NMIT integration bridge logo';
-  const schema = legacy ? {
+  const schema = richArticle && post ? {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'BlogPosting', '@id': `${url}#article`, headline: post.title, description, mainEntityOfPage: url, url, image: { '@type': 'ImageObject', url: image, width: 1536, height: 1024, caption: imageAlt }, datePublished: '2026-09-17', inLanguage: 'en', author: { '@type': 'Organization', name: 'NMIT', url: `${siteUrl}/about` }, publisher: { '@type': 'Organization', name: 'NMIT', url: siteUrl, logo: { '@type': 'ImageObject', url: `${siteUrl}/brand/nmit-concept.png` } }, articleSection: 'Integration architecture' },
-      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` }, { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog` }, { '@type': 'ListItem', position: 3, name: 'Legacy system integration', item: url }] },
+      { '@type': 'BlogPosting', '@id': `${url}#article`, headline: post.title, description, mainEntityOfPage: url, url, image: { '@type': 'ImageObject', url: image, width: 1536, height: 1024, caption: imageAlt }, datePublished: post.publishedAt, ...(post.modifiedAt ? { dateModified: post.modifiedAt } : {}), inLanguage: 'en', author: { '@type': 'Organization', name: 'NMIT', url: `${siteUrl}/about` }, publisher: { '@type': 'Organization', name: 'NMIT', url: siteUrl, logo: { '@type': 'ImageObject', url: `${siteUrl}/brand/nmit-concept.png` } }, articleSection: post.articleSection ?? 'Integration architecture' },
+      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/` }, { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog` }, { '@type': 'ListItem', position: 3, name: post.title, item: url }] },
     ],
   } : undefined;
-  return { title, description, url, image, imageAlt, schema, article: Boolean(post) };
+  return { title, description, url, image, imageAlt, schema, article: Boolean(post), publishedAt: richArticle ? post?.publishedAt : undefined, modifiedAt: richArticle ? post?.modifiedAt : undefined };
 }
 
 export function applyPageSeo(pathname: string) {
@@ -36,8 +36,10 @@ export function applyPageSeo(pathname: string) {
   for (const [key, value] of Object.entries({ 'og:title': seo.title, 'og:description': seo.description, 'og:url': seo.url, 'og:type': seo.article ? 'article' : 'website', 'og:image': seo.image, 'og:image:alt': seo.imageAlt, 'og:site_name': 'NMIT' })) setMeta('property', key, value);
   setMeta('property', 'og:image:width', seo.schema ? '1536' : '1280');
   setMeta('property', 'og:image:height', seo.schema ? '1024' : '1280');
-  if (seo.schema) setMeta('property', 'article:published_time', '2026-09-17');
+  if (seo.publishedAt) setMeta('property', 'article:published_time', seo.publishedAt);
   else document.head.querySelector('meta[property="article:published_time"]')?.remove();
+  if (seo.modifiedAt) setMeta('property', 'article:modified_time', seo.modifiedAt);
+  else document.head.querySelector('meta[property="article:modified_time"]')?.remove();
   for (const [key, value] of Object.entries({ 'twitter:card': seo.schema ? 'summary_large_image' : 'summary', 'twitter:title': seo.title, 'twitter:description': seo.description, 'twitter:image': seo.image, 'twitter:image:alt': seo.imageAlt })) setMeta('name', key, value);
   let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
   if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.append(canonical); }

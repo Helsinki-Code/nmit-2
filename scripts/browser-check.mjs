@@ -9,7 +9,7 @@ await mkdir(artifacts, { recursive: true });
 let reference;
 try { reference = await readFile(process.env.REFERENCE_HTML || '../website-review/ex.html', 'utf8'); } catch { /* Reference is optional in a fresh clone. */ }
 const browser = await chromium.launch({ executablePath, headless: true });
-const routes = ['', 'services', 'about', 'careers', 'blog', 'blog/legacy-system-integration', 'blog/telecom-cloud-migration', 'blog/partner-payment-apis', 'blog/hp-qualcomm-partnership', 'contact', 'contact/workshop'];
+const routes = ['', 'services', 'about', 'careers', 'blog', 'blog/legacy-system-integration', 'blog/telecom-cloud-migration', 'blog/partner-payment-apis', 'blog/erp-crm-integration', 'blog/api-vs-event-driven-vs-batch-integration', 'blog/payment-api-testing-checklist', 'blog/hybrid-cloud-migration-checklist', 'blog/api-integration-project-cost', 'blog/api-integration-monitoring', 'blog/integration-handover-checklist', 'blog/incremental-legacy-modernization', 'blog/hp-qualcomm-partnership', 'contact', 'contact/workshop'];
 const results = [];
 const errors = [];
 async function ready(page, url) {
@@ -18,15 +18,17 @@ async function ready(page, url) {
   await page.evaluate(() => Promise.race([document.fonts.ready, new Promise(resolve => setTimeout(resolve, 8000))]));
 }
 async function snapshot(page) {
-  return page.evaluate(() => ({
+  return page.evaluate(() => {
+    const content = document.querySelector('article.post') || document.querySelector('main');
+    return {
     title: document.title,
-    text: document.querySelector('main').innerText.replace(/\s+/g,' ').trim(),
+    text: content.innerText.replace(/\s+/g,' ').trim(),
     heading: document.querySelector('h1').textContent,
-    boxes: [...document.querySelectorAll('main section, main h1, main h2, main p, main .service-row')].map(el => {
+    boxes: [...content.querySelectorAll('section, h1, h2, p, .service-row')].map(el => {
       const r = el.getBoundingClientRect();
       return [el.tagName, ...[r.x,r.y,r.width,r.height].map(n => Math.round(n * 100)/100)];
     })
-  }));
+  }; });
 }
 try {
   const context = await browser.newContext({ viewport: { width:1280, height:900 }, colorScheme:'light', reducedMotion:'reduce' });
@@ -38,7 +40,7 @@ try {
     await ready(page, `${base}${route}`);
     assert.equal(await page.locator('h1').count(),1);
     const actual = await snapshot(page);
-    const compareReference = Boolean(refPage && route && route !== 'blog' && route !== 'blog/legacy-system-integration');
+    const compareReference = Boolean(refPage && ['blog/telecom-cloud-migration','blog/hp-qualcomm-partnership'].includes(route));
     if (compareReference) {
       await ready(refPage, `http://reference.test/#/${route}`);
       const expected = await snapshot(refPage);

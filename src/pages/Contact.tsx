@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
+import { Character } from '../components/CharacterGuide';
 const subjects = [['general','General enquiry'],['workshop','Book the free integration workshop'],['devops','DevOps'],['cloud','Cloud services'],['api','API integration'],['staffing','Staffing']];
 export function Contact() {
   const { preset } = useParams();
@@ -22,7 +23,7 @@ export function Contact() {
       <dt>phone</dt><dd><a href="tel:+919886970483">+91 98869 70483</a></dd>
       <dt>email</dt><dd><a href="mailto:info@nmit-solutions.com">info@nmit-solutions.com</a></dd>
       <dt>linkedin</dt><dd><a href="https://www.linkedin.com/company/nmit-solutions-pvt-ltd/" target="_blank" rel="noopener">nmit-solutions-pvt-ltd</a></dd>
-    </dl></div><div><form className="contact" id="contact-form" onSubmit={submit}>
+    </dl><div className="contact-guide"><Character pose={subject==='devops'?'man-runbook':subject==='cloud'?'man-investigate':'woman-plan'} /><p>Include the systems involved, the workflow you need, and any known constraints. Keep credentials and customer data out of your enquiry.</p></div></div><div><form className="contact" id="contact-form" onSubmit={submit}>
       <div><label htmlFor="name">Name</label><input id="name" name="name" type="text" required /></div>
       <div><label htmlFor="email">Email</label><input id="email" name="email" type="email" required /></div>
       <div><label htmlFor="subject">Subject</label><select id="subject" name="subject" value={subject} onChange={event => setSubject(event.target.value)}>{subjects.map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></div>

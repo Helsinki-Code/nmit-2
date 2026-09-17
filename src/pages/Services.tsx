@@ -1,4 +1,5 @@
 import { ServiceRow, Workshop } from '../components/Content';
+import { ContextGuide } from '../components/CharacterGuide';
 export function Services() {
   return <>
     <section className="prose"><h1>Four ways we get involved</h1><p className="lede" style={{ color:'var(--ink-muted)' }}>Most engagements start narrow — one integration, one migration — and grow from there once the first piece is working.</p></section>
@@ -8,6 +9,7 @@ export function Services() {
       <ServiceRow name="API integration" text="Most of our work starts here. We connect systems that were never built to talk to each other — CRMs, ERPs, payment gateways, mobile apps — through microservices and a shared API layer, replacing point-to-point integrations that break every time one system changes." core />
       <ServiceRow name="Staffing" text="We place DevOps, cloud, and integration engineers on your team, for a single project or on an ongoing basis." />
     </section>
+    <ContextGuide pose="woman-explain" title="Define the boundary before the solution." text="Describe the systems, operations, data ownership, and failures involved. A clear brief helps us discuss the right combination of integration, cloud, and operating support." href="/blog/api-integration-project-cost" label="Prepare your project brief" />
     <section className="tight"><Workshop detailed /></section>
     <section className="tight prose"><h2>Also covered</h2><div className="cap-list">
       <div className="cap"><b>Security</b>Access control and hardening across the systems we touch.</div>

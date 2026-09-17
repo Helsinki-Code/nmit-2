@@ -16,8 +16,8 @@ export function PostItem({ post }: { post: Post }) {
 }
 export function Workshop({ detailed = false }: { detailed?: boolean }) {
   return <div className="workshop"><span className="eyebrow-mono">no cost · one day · on-site</span>
-    <h2>{detailed ? 'The workshop, in detail' : 'Start with a one-day workshop, not a proposal.'}</h2>
-    <p style={{ maxWidth:'60ch',color:'var(--ink-muted)' }}>{detailed ? 'A free, one-day, on-site integration-modernization workshop, built around your actual architecture rather than a generic template.' : 'We spend a day on-site walking through your current architecture and mapping it against what you’re trying to do. You leave with a written plan, not a sales deck.'}</p>
+    <h2>{detailed ? 'The workshop, in detail' : 'Start with a one-day architecture workshop.'}</h2>
+    <p style={{ maxWidth:'60ch',color:'var(--ink-muted)' }}>{detailed ? 'A free, one-day, on-site integration-modernization workshop built around your current architecture, dependencies, and intended business workflow.' : 'We spend a day on-site reviewing your current architecture and the workflow you need to improve. You leave with a written architecture recommendation, including the boundaries and dependencies to address.'}</p>
     {detailed && <div className="workshop-steps">{[
       ['morning','We review your current architecture with whoever owns it — engineering leads, not just procurement.'],
       ['afternoon','We map that against where you’re trying to get to, and flag the two or three integration points most likely to cause problems.'],

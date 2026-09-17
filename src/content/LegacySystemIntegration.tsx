@@ -83,6 +83,7 @@ export function LegacySystemIntegration() {
 
         <ArticleSection id="integration-patterns" title="3. Choose APIs, events, or batch for each workflow">
           <p>A business landscape often needs more than one integration pattern. Match the pattern to the required response, data freshness, and failure tolerance.</p>
+          <p>For a deeper comparison of latency, coupling, ordering, and operating cost, use our <Link to="/blog/api-vs-event-driven-vs-batch-integration">API vs event-driven vs batch integration decision guide</Link>.</p>
           <div className="article-table-wrap" role="region" aria-label="Comparison of API event and batch integration" tabIndex={0}><table><caption>Three patterns and the operating questions they create</caption><thead><tr><th>Pattern</th><th>Useful when</th><th>Plan for</th></tr></thead><tbody>
             <tr><td>Request–response API</td><td>A caller needs a result before proceeding</td><td>Timeouts, downstream availability, and load limits</td></tr>
             <tr><td>Events or queued messages</td><td>Work can continue asynchronously or reach several consumers</td><td>Duplicates, ordering, replay, and delayed consistency</td></tr>
@@ -95,6 +96,7 @@ export function LegacySystemIntegration() {
         </ArticleSection>
 
         <ArticleSection id="data-contracts" title="4. Define data ownership and contracts before mapping fields">
+          <p>Our <Link to="/blog/erp-crm-integration">ERP–CRM data mapping, synchronization, and error-handling guide</Link> works through stable keys, field authority, conflicting updates, and failed-record recovery.</p>
           <p>Decide which application owns each fact. The CRM might own relationship notes, while the ERP owns an approved account status. Allowing both systems to overwrite the same field without a conflict rule makes synchronization unpredictable.</p>
           <p>Then define identity mappings. In this fictional example, the ERP’s <code>CUST_NO</code> and the CRM’s <code>contact_id</code> refer to related records but are different identifiers. A contract exposes a stable <code>customerId</code>, with a maintained cross-reference to each system. Renaming a field is insufficient if records do not have a reliable identity relationship.</p>
           <ArticleImage name="data-mapping" alt="Field-mapping illustration connects ERP CUST_NO, a shared customerId contract, and CRM contact_id through a verified translation boundary." caption={<>Illustrative names, not a vendor schema. The drawing shows the mapping relationship; ownership, identifier lookup, and conflict rules must also be defined.</>} />
@@ -112,7 +114,7 @@ export function LegacySystemIntegration() {
             <li><strong>Reconciliation:</strong> compare business records across systems and assign an owner to unresolved differences.</li>
           </ul>
           <p><Source href="https://docs.stripe.com/api/idempotent_requests">Stripe’s idempotent request documentation</Source> is a useful concrete example: repeated requests with the same key can return a saved result, subject to documented conditions. Those semantics belong to Stripe’s interface. They should not be assumed for every partner, and idempotency alone does not guarantee end-to-end settlement correctness.</p>
-          <p>For a closer look at the payment-specific decisions, read <Link to="/blog/partner-payment-apis">what a partner-payment API has to do</Link>. Apply the same discipline to account creation and other operations with external side effects.</p>
+          <p>For a closer look at the payment-specific decisions, read <Link to="/blog/partner-payment-apis">payment API integration: timeouts, retries, and reconciliation</Link>. Apply the same discipline to account creation and other operations with external side effects.</p>
         </ArticleSection>
 
         <ArticleSection id="security-boundaries" title="6. Secure each boundary and limit what it exposes">

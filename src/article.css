@@ -7,6 +7,7 @@
 .article-meta{display:flex;gap:12px 24px;flex-wrap:wrap;color:var(--ink-muted);font-family:var(--font-mono);font-size:.75rem;margin-top:22px}
 .article-meta a{color:inherit}
 .article-figure{margin:26px 0 30px}
+.article-content-image{scroll-margin-top:120px}
 .article-figure img{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:var(--radius);background:#EEF0E9}
 .article-figure figcaption{font-size:.82rem;color:var(--ink-muted);line-height:1.6;margin-top:10px;max-width:80ch}
 .article-cover{margin:0 auto 54px;max-width:980px}
@@ -41,6 +42,16 @@
 .article-secondary-cta{display:inline-block;font-size:.85rem;margin:12px 0 0 18px}
 .article-editorial-note{border-top:1px solid var(--border);padding-top:24px;color:var(--ink-muted);font-size:.82rem;line-height:1.65}
 .article-editorial-note h2{font-size:.95rem;color:var(--ink)}
+.article-diagram{margin:28px 0;padding:22px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius)}
+.diagram-brand{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:.75rem;margin-bottom:20px}
+.diagram-brand img{object-fit:contain;flex-shrink:0}
+.article-body .diagram-steps{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding:0;margin:0}
+.article-body .diagram-steps li{padding:0;margin:0;display:flex;flex-direction:column;gap:6px;border-top:2px solid var(--accent-teal);padding-top:10px;font-size:.82rem;line-height:1.6}
+.diagram-index{font-family:var(--font-mono);color:var(--accent-amber);font-size:.7rem}
+.article-diagram figcaption{font-size:.8rem;line-height:1.6;color:var(--ink-muted);margin-top:20px}
+.article-related{border-top:1px solid var(--border);padding-top:24px!important}
+.article-body tbody th{background:transparent;font-weight:500}
+@media(max-width:600px){.article-body .diagram-steps{grid-template-columns:1fr;gap:16px}.article-diagram{padding:18px}}
 .post-list .post-with-image{display:grid;grid-template-columns:180px minmax(0,1fr);gap:24px;align-items:center}
 .post-thumbnail{display:block;line-height:0}
 .post-thumbnail img{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:var(--radius)}

@@ -1,6 +1,15 @@
 {
   "rewrites": [
+    { "source": "/blog/api-integration-monitoring", "destination": "/blog/api-integration-monitoring/index.html" },
+    { "source": "/blog/integration-handover-checklist", "destination": "/blog/integration-handover-checklist/index.html" },
+    { "source": "/blog/incremental-legacy-modernization", "destination": "/blog/incremental-legacy-modernization/index.html" },
+    { "source": "/blog/payment-api-testing-checklist", "destination": "/blog/payment-api-testing-checklist/index.html" },
+    { "source": "/blog/hybrid-cloud-migration-checklist", "destination": "/blog/hybrid-cloud-migration-checklist/index.html" },
+    { "source": "/blog/api-integration-project-cost", "destination": "/blog/api-integration-project-cost/index.html" },
     { "source": "/blog/legacy-system-integration", "destination": "/blog/legacy-system-integration/index.html" },
+    { "source": "/blog/partner-payment-apis", "destination": "/blog/partner-payment-apis/index.html" },
+    { "source": "/blog/erp-crm-integration", "destination": "/blog/erp-crm-integration/index.html" },
+    { "source": "/blog/api-vs-event-driven-vs-batch-integration", "destination": "/blog/api-vs-event-driven-vs-batch-integration/index.html" },
     { "source": "/blog", "destination": "/blog/index.html" },
     { "source": "/((?!assets/|images/|brand/|sitemap\\.xml).*)", "destination": "/index.html" }
   ]
