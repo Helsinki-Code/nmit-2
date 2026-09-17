@@ -8,7 +8,7 @@ export function Header() {
   const [override, setOverride] = useState<Theme | null>(() => {
     try { const saved = localStorage.getItem('nmit-theme'); return saved === 'light' || saved === 'dark' ? saved : null; } catch { return null; }
   });
-  const [systemTheme, setSystemTheme] = useState<Theme>(() => matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  const [systemTheme, setSystemTheme] = useState<Theme>(() => typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   const theme = override ?? systemTheme;
   useEffect(() => {
     const media = matchMedia('(prefers-color-scheme: dark)');

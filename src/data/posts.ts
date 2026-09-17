@@ -1,6 +1,17 @@
-export interface Post { slug: string; date: string; title: string; excerpt: string; body: string[]; }
+export interface Post { slug: string; date: string; title: string; excerpt: string; body: string[]; contentKey?: 'legacy-integration'; featuredImage?: string; featuredImageAlt?: string; description?: string; }
 
 export const posts: Post[] = [
+    {
+      slug:'legacy-system-integration',
+      date:'17 September 2026',
+      title:'Legacy System Integration: Connect ERP, CRM, and Partner Systems Without a Full Rewrite',
+      excerpt:'Keep useful existing systems. Define the contracts, data ownership, failure handling, and rollout boundaries that connect them reliably.',
+      description:'Connect legacy ERP, CRM, and partner systems with APIs, adapters, events, and batch flows. Plan data ownership, failure handling, and a phased rollout.',
+      contentKey:'legacy-integration',
+      featuredImage:'/images/articles/legacy-system-integration/cover-768.webp',
+      featuredImageAlt:'Legacy documents connect through a contract boundary to shared interfaces in NMIT’s teal, amber, and sage palette.',
+      body:[],
+    },
     {
       slug:'telecom-cloud-migration',
       date:'12 December 2024',

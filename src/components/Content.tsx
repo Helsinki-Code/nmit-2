@@ -9,7 +9,10 @@ export function Readout() {
 }
 export function ClientNames() { return <>{clients.map(client => <span key={client}>{client}</span>)}</>; }
 export function PostItem({ post }: { post: Post }) {
-  return <div className="item"><div className="date">{post.date}</div><h3><Link to={`/blog/${post.slug}`}>{post.title}</Link></h3><p style={{ color:'var(--ink-muted)',maxWidth:'60ch' }}>{post.excerpt}</p></div>;
+  return <div className={`item${post.featuredImage ? ' post-with-image' : ''}`}>
+    {post.featuredImage && <Link className="post-thumbnail" to={`/blog/${post.slug}`}><img src={post.featuredImage} alt={post.featuredImageAlt ?? post.title} width={768} height={512} loading="lazy" decoding="async" /></Link>}
+    <div><div className="date">{post.date}</div><h3><Link to={`/blog/${post.slug}`}>{post.title}</Link></h3><p style={{ color:'var(--ink-muted)',maxWidth:'60ch' }}>{post.excerpt}</p></div>
+  </div>;
 }
 export function Workshop({ detailed = false }: { detailed?: boolean }) {
   return <div className="workshop"><span className="eyebrow-mono">no cost · one day · on-site</span>

@@ -8,17 +8,14 @@ import { About } from './pages/About';
 import { Careers } from './pages/Careers';
 import { Blog, BlogPost } from './pages/Blog';
 import { Contact } from './pages/Contact';
-import { posts } from './data/posts';
-const titles: Record<string,string> = {
-  '': 'NM IT Solutions — cloud, DevOps, and API integration', services:'Services — NM IT Solutions', about:'About — NM IT Solutions', careers:'Careers — NM IT Solutions', blog:'Blog — NM IT Solutions', contact:'Contact — NM IT Solutions'
-};
+import { applyPageSeo } from './seo';
 function RouteEffects() {
   const { pathname } = useLocation();
   useEffect(() => {
-    const [page = '',slug] = pathname.split('/').filter(Boolean);
-    const post = page === 'blog' ? posts.find(item => item.slug === slug) : undefined;
-    document.title = post ? `${post.title} — NM IT Solutions` : titles[page] ?? 'NM IT Solutions';
-    window.scrollTo(0,0);
+    applyPageSeo(pathname);
+    if (window.location.hash && !window.location.hash.startsWith('#/')) {
+      requestAnimationFrame(() => document.getElementById(decodeURIComponent(window.location.hash.slice(1)))?.scrollIntoView());
+    } else window.scrollTo(0,0);
   }, [pathname]);
   return null;
 }

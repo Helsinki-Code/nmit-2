@@ -9,7 +9,7 @@ await mkdir(artifacts, { recursive: true });
 let reference;
 try { reference = await readFile(process.env.REFERENCE_HTML || '../website-review/ex.html', 'utf8'); } catch { /* Reference is optional in a fresh clone. */ }
 const browser = await chromium.launch({ executablePath, headless: true });
-const routes = ['', 'services', 'about', 'careers', 'blog', 'blog/telecom-cloud-migration', 'blog/partner-payment-apis', 'blog/hp-qualcomm-partnership', 'contact', 'contact/workshop'];
+const routes = ['', 'services', 'about', 'careers', 'blog', 'blog/legacy-system-integration', 'blog/telecom-cloud-migration', 'blog/partner-payment-apis', 'blog/hp-qualcomm-partnership', 'contact', 'contact/workshop'];
 const results = [];
 const errors = [];
 async function ready(page, url) {
@@ -35,18 +35,19 @@ try {
   page.on('pageerror', error => errors.push(error.message));
   const refPage = reference ? await context.newPage() : null;
   for (const route of routes) {
-    await ready(page, `${base}#/${route}`);
+    await ready(page, `${base}${route}`);
     assert.equal(await page.locator('h1').count(),1);
     const actual = await snapshot(page);
-    if (refPage && route) {
+    const compareReference = Boolean(refPage && route && route !== 'blog' && route !== 'blog/legacy-system-integration');
+    if (compareReference) {
       await ready(refPage, `http://reference.test/#/${route}`);
       const expected = await snapshot(refPage);
-      assert.equal(actual.title,expected.title, `${route}: title`);
+      assert.equal(actual.title,expected.title.replaceAll('NM IT Solutions','NMIT'), `${route}: title branding`);
       assert.equal(actual.text,expected.text, `${route}: page content`);
       assert.deepEqual(actual.boxes,expected.boxes, `${route}: layout geometry`);
     }
-    results.push({ route:`/#/${route}`, heading:actual.heading, referenceMatched:!!reference && !!route });
-    console.log(`PASS /#/${route}${reference && route ? ' — content and layout match reference' : ''}`);
+    results.push({ route:`/${route}`, heading:actual.heading, referenceMatched:compareReference });
+    console.log(`PASS /${route}${compareReference ? ' — content and layout match reference' : ''}`);
   }
   await page.locator('#theme-toggle').click();
   assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');

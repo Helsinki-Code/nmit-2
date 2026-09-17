@@ -1,0 +1,2 @@
+# Existing files, including prerendered articles, are served before the SPA fallback.
+/* /index.html 200

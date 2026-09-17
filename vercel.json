@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/blog/legacy-system-integration", "destination": "/blog/legacy-system-integration/index.html" },
+    { "source": "/blog", "destination": "/blog/index.html" },
+    { "source": "/((?!assets/|images/|brand/|sitemap\\.xml).*)", "destination": "/index.html" }
+  ]
+}
