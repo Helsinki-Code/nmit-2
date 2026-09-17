@@ -1,15 +1,13 @@
 import { chromium } from '@playwright/test';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 const base = process.env.PREVIEW_URL || 'http://127.0.0.1:4175/';
 const executablePath = process.env.CHROME_BIN || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const artifacts = path.resolve('artifacts');
 await mkdir(artifacts, { recursive: true });
-let reference;
-try { reference = await readFile(process.env.REFERENCE_HTML || '../website-review/ex.html', 'utf8'); } catch { /* Reference is optional in a fresh clone. */ }
 const browser = await chromium.launch({ executablePath, headless: true });
-const routes = ['', 'services', 'about', 'careers', 'blog', 'blog/legacy-system-integration', 'blog/telecom-cloud-migration', 'blog/partner-payment-apis', 'blog/erp-crm-integration', 'blog/api-vs-event-driven-vs-batch-integration', 'blog/payment-api-testing-checklist', 'blog/hybrid-cloud-migration-checklist', 'blog/api-integration-project-cost', 'blog/api-integration-monitoring', 'blog/integration-handover-checklist', 'blog/incremental-legacy-modernization', 'blog/hp-qualcomm-partnership', 'contact', 'contact/workshop'];
+const routes = ['', 'services', 'about', 'careers', 'blog', 'blog/legacy-system-integration', 'blog/partner-payment-apis', 'blog/erp-crm-integration', 'blog/api-vs-event-driven-vs-batch-integration', 'blog/payment-api-testing-checklist', 'blog/hybrid-cloud-migration-checklist', 'blog/api-integration-project-cost', 'blog/api-integration-monitoring', 'blog/integration-handover-checklist', 'blog/incremental-legacy-modernization', 'contact', 'contact/workshop'];
 const results = [];
 const errors = [];
 async function ready(page, url) {
@@ -32,24 +30,14 @@ async function snapshot(page) {
 }
 try {
   const context = await browser.newContext({ viewport: { width:1280, height:900 }, colorScheme:'light', reducedMotion:'reduce' });
-  if (reference) await context.route('http://reference.test/**', route => route.fulfill({ contentType:'text/html', body:reference }));
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
-  const refPage = reference ? await context.newPage() : null;
   for (const route of routes) {
     await ready(page, `${base}${route}`);
     assert.equal(await page.locator('h1').count(),1);
     const actual = await snapshot(page);
-    const compareReference = Boolean(refPage && ['blog/telecom-cloud-migration','blog/hp-qualcomm-partnership'].includes(route));
-    if (compareReference) {
-      await ready(refPage, `http://reference.test/#/${route}`);
-      const expected = await snapshot(refPage);
-      assert.equal(actual.title,expected.title.replaceAll('NM IT Solutions','NMIT'), `${route}: title branding`);
-      assert.equal(actual.text,expected.text, `${route}: page content`);
-      assert.deepEqual(actual.boxes,expected.boxes, `${route}: layout geometry`);
-    }
-    results.push({ route:`/${route}`, heading:actual.heading, referenceMatched:compareReference });
-    console.log(`PASS /${route}${compareReference ? ' — content and layout match reference' : ''}`);
+    results.push({ route:`/${route}`, heading:actual.heading,  });
+    console.log(`PASS /${route}`);
   }
   await page.locator('#theme-toggle').click();
   assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
@@ -72,7 +60,6 @@ try {
     ['home-mobile',{width:390,height:844},'light']
   ]) {
     const ctx = await browser.newContext({ viewport,colorScheme,reducedMotion:'reduce' });
-    if(reference) await ctx.route('http://reference.test/**', route => route.fulfill({ contentType:'text/html',body:reference }));
     const app = await ctx.newPage();
     await ready(app,base+'#/');
     await app.locator('.model-stage[data-status="ready"]').waitFor();

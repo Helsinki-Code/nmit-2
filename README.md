@@ -23,7 +23,7 @@ BrowserRouter uses clean paths; old /#/ links are converted on load. Vercel arti
 - src/components/CharacterGuide.tsx: decorative cutouts and contextual guidance.
 - src/components/ClientLogos.tsx: six supplied logos, also grouped by sector on About.
 - src/content/: ten full guides and shared article components.
-- src/data/posts.ts: typed metadata and retained reference posts.
+- src/data/posts.ts: typed metadata for the ten full guides.
 - src/seo.ts: canonical/social metadata and article schema.
 - src/styles.css, src/home.css, src/article.css: theme tokens and responsive layouts.
 - src/entry-server.tsx and scripts/prerender-articles.mjs: generated HTML and sitemap.
@@ -50,7 +50,7 @@ Full guides:
 - /blog/integration-handover-checklist
 - /blog/incremental-legacy-modernization
 
-The telecom and hardware reference posts remain at /blog/telecom-cloud-migration and /blog/hp-qualcomm-partnership. The payment guide retains its original URL/publication date and shows its update date. Guides have contextual cluster/service links and related reading. Unknown paths show the not-found view.
+The payment guide retains its original URL/publication date and shows its update date. Guides have contextual cluster/service links and related reading. Unknown paths show the not-found view.
 
 The contact form opens a draft in the visitor's email app; there is no enquiry backend. Topic selection changes the subject and contextual character. Theme preference persists locally and defaults to device preference. Characters are fictional brand illustrations, not staff portraits.
 
@@ -62,7 +62,7 @@ The hero model loads in a separate lazy bundle. It moves slowly and supports dra
 
 The production build passes. Static audits checked all ten guide bodies, three article images per guide, descriptive alt text, asset existence, unique IDs, contents targets, and structured data. In-app browser checks covered six new guide routes at 390px width, inline figure loading, desktop/light/dark homepage layouts, filters, workflow switching, characters on the main pages, six logos on Home/About, contact presets, hero text spacing, and Cloud explainer dismissal. No horizontal overflow was observed in these checks.
 
-npm run verify:browser is the optional existing CLI suite using installed Google Chrome. It now lists nineteen routes, with reference comparisons scoped to the two retained short article bodies, excluding their new contextual guidance. It was not rerun during this in-app verification. CHROME_BIN, PREVIEW_URL, and REFERENCE_HTML override defaults. Generated browser artifacts, dist/, .prerender/, and .seo-cache/ are ignored.
+npm run verify:browser is the optional existing CLI suite using installed Google Chrome. It now lists seventeen routes. The incomplete placeholder posts have been removed; the blog lists only full guides. It was not rerun during this in-app verification. CHROME_BIN and PREVIEW_URL override defaults. Generated browser artifacts, dist/, .prerender/, and .seo-cache/ are ignored.
 
 The build reports chunks above 500KB for the application and separate Three.js bundle. This is a size warning, not a build failure. Editorial scores are manual assessments, not measured search performance.
 
